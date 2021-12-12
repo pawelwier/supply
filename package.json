@@ -9,6 +9,7 @@
     "start:api": "cd src/api && nodemon server.js"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

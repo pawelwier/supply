@@ -14,7 +14,7 @@ module.exports = {
 }
 
 /*
-CREATE TABLE supply.Products (
+CREATE TABLE supply.Demands (
 	id BIGINT UNSIGNED auto_increment not null primary key,
 	name varchar(100) NULL,
 	unit varchar(100) NULL,

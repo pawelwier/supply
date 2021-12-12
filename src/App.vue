@@ -1,10 +1,29 @@
 <template>
+  <PopUp v-if="displayedComponent">
+    <component :is="displayedComponent === 'add-demand' ? NewDemandForm : AddOrderForm" />
+  </PopUp>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/">Zapotrzebowanie</router-link> |
+    <router-link to="/about">Zamówienia w toku</router-link>
   </div>
   <router-view/>
 </template>
+
+<script setup>
+import {useStore} from 'vuex'
+import {ref} from 'vue'
+import PopUp from "./components/utils/PopUp";
+import NewDemandForm from "./components/demands/AddDemandForm";
+import AddOrderForm from "./components/orders/AddOrderForm";
+
+const displayedComponent = ref(null)
+const store = useStore()
+store.watch(
+  (state, getters) => getters.getPopupContent,
+  newValue => displayedComponent.value = newValue
+)
+
+</script>
 
 <style>
 #app {
