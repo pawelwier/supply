@@ -1,4 +1,4 @@
-const {connection} = require ('../config/sqlConfig')
+const {connection} = require('../config/sqlConfig')
 
 const getAllOrders = async (req, res) => {
   const sqlQuery = `SELECT * FROM orders`
@@ -9,7 +9,6 @@ const getAllOrders = async (req, res) => {
 
 const getOrdersByDemandCategory = async (req, res) => {
   const {category} = req.params
-  console.log(category)
   const sqlQuery = `SELECT a.* FROM orders a INNER JOIN products b on a.productId=b.id WHERE b.category = "${category}"`
   await connection.query(sqlQuery, (err, data) => {
     res.json({data})

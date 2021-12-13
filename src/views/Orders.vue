@@ -5,11 +5,11 @@
     <table>
       <tbody>
       <tr>
-        <th v-for="header in headers" :key="header">
+        <th v-for="(header, i) in headers" :key="i">
           {{header}}
         </th>
       </tr>
-      <tr v-for="order in orders" :key="order.id">
+      <tr v-for="(order, i) in orders" :key="i">
         <OrderRecord :order="order" />
       </tr>
       </tbody>

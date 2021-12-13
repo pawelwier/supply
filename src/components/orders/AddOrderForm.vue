@@ -19,7 +19,7 @@
         </label>
         <select v-model="order.assignedTo">
           <option> - </option>
-          <option v-for="person in supplyTeam" :key="person">
+          <option v-for="(person, i) in supplyTeam" :key="i">
             {{person}}
           </option>
         </select>
@@ -30,7 +30,7 @@
         </label>
         <select v-model="order.deliveryBase">
           <option> - </option>
-          <option v-for="base in supplyBases" :key="base">
+          <option v-for="(base, i) in supplyBases" :key="i">
             {{base}}
           </option>
         </select>

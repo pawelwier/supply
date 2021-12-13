@@ -4,7 +4,8 @@
   </PopUp>
   <div id="nav">
     <router-link to="/">Zapotrzebowanie</router-link> |
-    <router-link to="/orders">Zamówienia w toku</router-link>
+    <router-link to="/orders">Zamówienia w toku</router-link> |
+    <router-link to="/archive">Archiwum</router-link>
   </div>
   <router-view/>
 </template>

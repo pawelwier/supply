@@ -21,6 +21,7 @@ CREATE TABLE supply.Demands (
 	name varchar(100) NULL,
 	unit varchar(100) NULL,
 	quantity BIGINT UNSIGNED NULL,
+	originalQuantity BIGINT UNSIGNED NULL,
 	comment varchar(100) NULL,
 	createdBy varchar(100) NULL,
 	createdAt DATETIME NULL,

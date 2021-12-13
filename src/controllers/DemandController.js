@@ -4,6 +4,10 @@ export async function getAllDemands() {
   return await makeApiRequest('get', getApiUrl('demands'))
 }
 
+export async function getCompleteDemands() {
+  return await makeApiRequest('get', getApiUrl('demands/complete'))
+}
+
 export async function getDemandsByCategory(category) {
   return await makeApiRequest('get', getApiUrl(`demands/category/${category}`))
 }

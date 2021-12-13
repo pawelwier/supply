@@ -4,7 +4,7 @@
     <table>
       <tbody>
       <tr>
-        <th v-for="header in demandHeaders" :key="header">
+        <th v-for="(header, i) in demandHeaders" :key="i">
           {{header}}
         </th>
         <th></th>
@@ -12,7 +12,7 @@
           Pilne?
         </th>
       </tr>
-      <tr v-for="demand in demands" :key="demand.id">
+      <tr v-for="(demand, i) in demands" :key="i">
         <DemandRecord :demand="demand" />
       </tr>
       </tbody>
