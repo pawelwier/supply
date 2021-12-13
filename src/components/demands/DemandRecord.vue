@@ -3,12 +3,13 @@
     {{getFieldValue(demand, field)}}
   </td>
   <td>
-    <AddOrderButton />
+    <AddOrderButton :id="demand.id" />
   </td>
 </template>
 
 <script setup>
 import {defineProps} from 'vue'
+import {demandFields} from '../../data/demandFields'
 import {formatDate} from "../../utils/formUtils";
 import AddOrderButton from "../orders/AddOrderButton";
 
@@ -16,16 +17,6 @@ defineProps({
   demand: Object,
 })
 
-const demandFields = [
-  'name',
-  'unit',
-  'quantity',
-  'comment',
-  'createdBy',
-  'assignedTo',
-  'status',
-  'createdAt',
-]
 
 const getFieldValue = (demand, value) => value === 'createdAt' ? formatDate(new Date(demand[value])) : demand[value]
 </script>

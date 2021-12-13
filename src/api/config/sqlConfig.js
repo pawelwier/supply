@@ -14,6 +14,8 @@ module.exports = {
 }
 
 /*
+
+// demands
 CREATE TABLE supply.Demands (
 	id BIGINT UNSIGNED auto_increment not null primary key,
 	name varchar(100) NULL,
@@ -26,6 +28,26 @@ CREATE TABLE supply.Demands (
 	orderStartedAt DATETIME NULL,
 	orderFinishedAt DATETIME NULL,
 	status varchar(100) NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+// orders
+CREATE TABLE supply.Orders (
+	id BIGINT UNSIGNED auto_increment not null primary key,
+	productId bigint unsigned NULL,
+	unit varchar(100) NULL,
+	quantity INT UNSIGNED NULL,
+	comment varchar(100) NULL,
+	createdBy varchar(100) NULL,
+	createdAt DATETIME NULL,
+	assignedTo varchar(100) NULL,
+	orderStartedAt DATETIME NULL,
+	orderFinishedAt DATETIME NULL,
+	status varchar(100) null,
+	deliveryBase varchar(100) null,
+	FOREIGN KEY (productId) REFERENCES products(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

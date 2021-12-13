@@ -1,9 +1,15 @@
 const {connection} = require ('../config/sqlConfig')
 
-connection.connect();
-
 const getAllDemands = async (req, res) => {
   const sqlQuery = `SELECT * FROM products`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
+const getDemandById = async (req, res) => {
+  const {id} = req.params
+  const sqlQuery = `SELECT * FROM products WHERE id = ${id}`
   await connection.query(sqlQuery, (err, data) => {
     res.json({data})
   })
@@ -38,6 +44,7 @@ const deleteDemand = async (req, res) => {
 
 module.exports = {
   getAllDemands,
+  getDemandById,
   addNewDemand,
   updateDemand,
   deleteDemand,

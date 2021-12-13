@@ -1,16 +1,31 @@
 <template>
-<div class="popup-wrapper">
-  <slot />
-</div>
+  <div class="popup-wrapper">
+    <div>
+      Nagłówek
+    </div>
+    <div>
+      <slot />
+    </div>
+    <div>
+      <button @click="closePopup">Zamknij</button>
+<!--      <button>Wyślij</button>-->
+    </div>
+  </div>
 </template>
 
 <script setup>
+import {useStore} from "vuex";
+const store = useStore()
+
+const closePopup = () => {
+  store.dispatch('setPopupContent', null)
+}
 
 </script>
 
 <style scoped>
 .popup-wrapper {
-  position: relative;
+  position: absolute;
   top: 50px;
   left: 20%;
   width: 60%;

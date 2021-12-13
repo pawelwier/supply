@@ -29,8 +29,8 @@ const headers = [
   'ilość',
   'komentarz',
   'kto dodał',
-  'przypisane do',
-  'status',
+  'przypisane do (???)',
+  'status (???)',
   'data dodania',
 ]
 
