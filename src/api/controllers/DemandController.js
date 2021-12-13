@@ -24,9 +24,9 @@ const getDemandById = async (req, res) => {
 }
 
 const addNewDemand = async (req, res) => {
-  const {name, unit, quantity, comment, category} = req.body
+  const {name, unit, quantity, comment, category, isComplete} = req.body
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  const sqlQuery = `INSERT INTO products (name, unit, quantity, comment, category, createdBy, createdAt) VALUES ("${name}", "${unit}", ${Number(quantity)}, "${comment}", "${category}", "pawel", "${currentDate}")`
+  const sqlQuery = `INSERT INTO products (name, unit, quantity, comment, category, createdBy, createdAt, isComplete) VALUES ("${name}", "${unit}", ${Number(quantity)}, "${comment}", "${category}", "pawel", "${currentDate}", ${Number(isComplete)})`
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })

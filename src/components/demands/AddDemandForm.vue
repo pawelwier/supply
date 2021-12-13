@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="submitDemand" class="order-form">
+    <form @submit.prevent="submitDemand" class="demand-form">
       <div>
         <label>
           Nazwa:
@@ -42,6 +42,7 @@ const demand = ref({
   quantity: null,
   comment: '',
   createdBy: 'pawel',
+  isComplete: 0,
 
 })
 
@@ -59,5 +60,13 @@ const submitDemand = async () => {
 </script>
 
 <style scoped>
-
+.demand-form {
+  text-align: left;
+}
+.demand-form div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
 </style>

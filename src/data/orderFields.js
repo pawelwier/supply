@@ -3,6 +3,7 @@ export const orderFields = [
   'comment',
   'createdBy',
   'assignedTo',
+  'deliveryBase',
   'status',
   'createdAt',
 ]

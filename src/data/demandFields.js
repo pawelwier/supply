@@ -1,8 +1,8 @@
 export const demandFields = [
   'name',
+  'quantity',
   'category',
   'unit',
-  'quantity',
   'comment',
   'createdBy',
   'createdAt',

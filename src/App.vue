@@ -46,4 +46,7 @@ store.watch(
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+button {
+  padding: 5px 20px;
+}
 </style>

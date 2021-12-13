@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="add-new-demand-button">
     <button @click="toggleDisplayNewDemandForm(true)">
       Dodaj nowe zapotrzebowanie
     </button>
@@ -17,5 +17,7 @@ const toggleDisplayNewDemandForm = () => {
 </script>
 
 <style scoped>
-
+.add-new-demand-button {
+  margin-top: 20px;
+}
 </style>

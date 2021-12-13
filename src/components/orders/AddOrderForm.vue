@@ -8,7 +8,10 @@
         <label>
           Ile?
         </label>
-        <input type="number" :max="demand.quantity" min="1" v-model="order.quantity" />
+        <input @change="setQuantity" type="number" :max="demand.quantity" min="1" v-model="order.quantity" />
+        <button type="button" @click="setMaxQuantity">
+          wszystko
+        </button>
       </div>
       <div>
         <label>
@@ -65,6 +68,24 @@ const order = ref({
 
 const store = useStore()
 
+const setQuantity = (e) => {
+  const demandQuantity = demand.value.quantity
+  const quantity = e.target.value
+  if (quantity > demandQuantity) {
+    order.value = {
+      ...order.value,
+      quantity: demandQuantity
+    }
+  }
+}
+
+const setMaxQuantity = () => {
+  order.value = {
+    ...order.value,
+    quantity: demand.value.quantity
+  }
+}
+
 const submitOrder = async () => {
   const {unit, id} = demand.value
   const orderBody = {
@@ -75,10 +96,15 @@ const submitOrder = async () => {
   await addOrder(orderBody)
 
   const {quantity} = demand.value
-  const demandBody = {
+  await editDemand({
     quantity: quantity - orderBody.quantity
+  }, demand.value.id)
+
+  if (!(quantity - orderBody.quantity)) {
+    await editDemand({
+      isComplete: 1
+    }, demand.value.id)
   }
-  await editDemand(demandBody, demand.value.id)
   window.location.reload()
 }
 

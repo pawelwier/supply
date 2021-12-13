@@ -4,8 +4,12 @@
     <table>
       <tbody>
       <tr>
-        <th v-for="header in headers" :key="header">
+        <th v-for="header in demandHeaders" :key="header">
           {{header}}
+        </th>
+        <th></th>
+        <th>
+          Pilne?
         </th>
       </tr>
       <tr v-for="demand in demands" :key="demand.id">
@@ -23,6 +27,7 @@ import {getAllDemands, getDemandsByCategory} from '../controllers/DemandControll
 import DemandRecord from "../components/demands/DemandRecord";
 import AddDemandButton from "../components/demands/AddDemandButton";
 import CategorySelect from "../components/utils/CategorySelect";
+import {demandHeaders} from "../data/demandHeaders";
 
 const demands = ref(null)
 
@@ -30,16 +35,6 @@ const categorySelect = async (category) => {
   const res = category ? await getDemandsByCategory(category) : await getAllDemands()
   demands.value = res.data
 }
-
-const headers = [
-  'nazwa',
-  'kategoria',
-  'jednostka',
-  'ilość',
-  'komentarz',
-  'kto dodał',
-  'data dodania',
-]
 
 onMounted(async () => {
   const res = await getAllDemands()
@@ -54,5 +49,8 @@ onMounted(async () => {
 }
 th {
   padding: 0 20px;
+}
+tr {
+  line-height: 30px;
 }
 </style>
