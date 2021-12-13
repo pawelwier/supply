@@ -1,5 +1,6 @@
 const {
   getAllOrders,
+  getOrdersByDemandId,
   getOrdersByDemandCategory,
   addNewOrder,
   updateOrder,
@@ -11,6 +12,7 @@ const orderRouter = express.Router()
 
 orderRouter.get('/', getAllOrders)
 orderRouter.get('/category/:category', getOrdersByDemandCategory)
+orderRouter.get('/demand/:id', getOrdersByDemandId)
 orderRouter.post('/', addNewOrder)
 orderRouter.put('/:id', updateOrder)
 orderRouter.delete('/:id', deleteOrder)

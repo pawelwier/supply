@@ -15,6 +15,14 @@ const getOrdersByDemandCategory = async (req, res) => {
   })
 }
 
+const getOrdersByDemandId = async (req, res) => {
+  const {id} = req.params
+  const sqlQuery = `SELECT * FROM orders WHERE productId = "${id}"`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
 const addNewOrder = async (req, res) => {
   const {productId, quantity, comment, createdBy, assignedTo, deliveryBase} = req.body
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -44,6 +52,7 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
   getAllOrders,
+  getOrdersByDemandId,
   getOrdersByDemandCategory,
   addNewOrder,
   updateOrder,
