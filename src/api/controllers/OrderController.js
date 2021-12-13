@@ -7,9 +7,17 @@ const getAllOrders = async (req, res) => {
   })
 }
 
+const getOrdersByDemandCategory = async (req, res) => {
+  const {category} = req.params
+  console.log(category)
+  const sqlQuery = `SELECT a.* FROM orders a INNER JOIN products b on a.productId=b.id WHERE b.category = "${category}"`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
 const addNewOrder = async (req, res) => {
   const {productId, quantity, comment, createdBy, assignedTo, deliveryBase} = req.body
-  console.log(req.body)
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
   const sqlQuery = `INSERT INTO orders (productId, quantity, comment, createdBy, assignedTo, deliveryBase, status, createdAt) VALUES ("${Number(productId)}", ${Number(quantity)}, "${comment}", "${createdBy}", "${assignedTo}", "${deliveryBase}", "nowy", "${currentDate}")`
   await connection.query(sqlQuery, (err, rows) => {
@@ -37,6 +45,7 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
   getAllOrders,
+  getOrdersByDemandCategory,
   addNewOrder,
   updateOrder,
   deleteOrder,

@@ -1,5 +1,7 @@
 <template>
   <div class="home" v-if="orders">
+    <CategorySelect @change="categorySelect" />
+
     <table>
       <tbody>
       <tr>
@@ -17,8 +19,9 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-import {getAllOrders} from '../controllers/OrderController'
+import {getAllOrders, getOrdersByCategory} from '../controllers/OrderController'
 import OrderRecord from "../components/orders/OrderRecord";
+import CategorySelect from "../components/utils/CategorySelect";
 
 const orders = ref(null)
 const headers = [
@@ -32,10 +35,14 @@ const headers = [
   'data dodania',
 ]
 
+const categorySelect = async (category) => {
+  const res = category ? await getOrdersByCategory(category) : await getAllOrders()
+  orders.value = res.data
+}
+
 onMounted(async () => {
   const res = await getAllOrders()
   orders.value = res.data
-  console.log(orders.value)
 })
 
 </script>

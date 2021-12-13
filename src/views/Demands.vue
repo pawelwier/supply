@@ -1,4 +1,5 @@
 <template>
+  <CategorySelect @change="categorySelect" />
   <div class="home" v-if="demands">
     <table>
       <tbody>
@@ -18,19 +19,25 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-import {getAllDemands} from '../controllers/DemandController'
+import {getAllDemands, getDemandsByCategory} from '../controllers/DemandController'
 import DemandRecord from "../components/demands/DemandRecord";
 import AddDemandButton from "../components/demands/AddDemandButton";
+import CategorySelect from "../components/utils/CategorySelect";
 
 const demands = ref(null)
+
+const categorySelect = async (category) => {
+  const res = category ? await getDemandsByCategory(category) : await getAllDemands()
+  demands.value = res.data
+}
+
 const headers = [
   'nazwa',
+  'kategoria',
   'jednostka',
   'ilość',
   'komentarz',
   'kto dodał',
-  'przypisane do (???)',
-  'status (???)',
   'data dodania',
 ]
 
@@ -42,6 +49,9 @@ onMounted(async () => {
 </script>
 
 <style>
+.category-select {
+  margin-bottom: 20px;
+}
 th {
   padding: 0 20px;
 }

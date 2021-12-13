@@ -1,5 +1,6 @@
 const {
   getAllDemands,
+  getDemandsByCategory,
   getDemandById,
   addNewDemand,
   updateDemand,
@@ -10,6 +11,7 @@ const express = require('express')
 const demandRouter = express.Router()
 
 demandRouter.get('/', getAllDemands)
+demandRouter.get('/category/:category', getDemandsByCategory)
 demandRouter.get('/:id', getDemandById)
 demandRouter.post('/', addNewDemand)
 demandRouter.put('/:id', updateDemand)

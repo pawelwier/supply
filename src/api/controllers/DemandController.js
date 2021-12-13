@@ -7,6 +7,14 @@ const getAllDemands = async (req, res) => {
   })
 }
 
+const getDemandsByCategory = async (req, res) => {
+  const {category} = req.params
+  const sqlQuery = `SELECT * FROM products WHERE category = "${category}"`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
 const getDemandById = async (req, res) => {
   const {id} = req.params
   const sqlQuery = `SELECT * FROM products WHERE id = ${id}`
@@ -16,9 +24,9 @@ const getDemandById = async (req, res) => {
 }
 
 const addNewDemand = async (req, res) => {
-  const {name, unit, quantity, comment, createdBy, assignedTo} = req.body
+  const {name, unit, quantity, comment, category} = req.body
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  const sqlQuery = `INSERT INTO products (name, unit, quantity, comment, createdBy, assignedTo, status, createdAt) VALUES ("${name}", "${unit}", ${Number(quantity)}, "${comment}", "${createdBy}", "${assignedTo}", "new", "${currentDate}")`
+  const sqlQuery = `INSERT INTO products (name, unit, quantity, comment, category, createdBy, createdAt) VALUES ("${name}", "${unit}", ${Number(quantity)}, "${comment}", "${category}", "pawel", "${currentDate}")`
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })
@@ -44,6 +52,7 @@ const deleteDemand = async (req, res) => {
 
 module.exports = {
   getAllDemands,
+  getDemandsByCategory,
   getDemandById,
   addNewDemand,
   updateDemand,

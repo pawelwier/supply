@@ -79,6 +79,7 @@ const submitOrder = async () => {
     quantity: quantity - orderBody.quantity
   }
   await editDemand(demandBody, demand.value.id)
+  window.location.reload()
 }
 
 onMounted(async () => {

@@ -24,10 +24,9 @@ CREATE TABLE supply.Demands (
 	comment varchar(100) NULL,
 	createdBy varchar(100) NULL,
 	createdAt DATETIME NULL,
-	assignedTo varchar(100) NULL,
 	orderStartedAt DATETIME NULL,
 	orderFinishedAt DATETIME NULL,
-	status varchar(100) NULL
+	category varchar(100) NULL
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

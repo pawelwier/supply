@@ -4,6 +4,10 @@ export async function getAllOrders() {
   return await makeApiRequest('get', getApiUrl('orders'))
 }
 
+export async function getOrdersByCategory(category) {
+  return await makeApiRequest('get', getApiUrl(`orders/category/${category}`))
+}
+
 export async function getOrderById(id) {
   return await makeApiRequest('get', getApiUrl(`orders/${id}`))
 }

@@ -32,5 +32,7 @@ const closePopup = () => {
   max-width: 800px;
   z-index: 9999;
   background-color: #FFF;
+  border: 2px #42b983 solid;
+  padding: 10px;
 }
 </style>

@@ -28,7 +28,6 @@ onMounted(async () => {
   const id = props.order.productId
   const res = await getDemandById(id)
   demand.value = res.data[0]
-  console.log(demand.value)
 })
 </script>
 
