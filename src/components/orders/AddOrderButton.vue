@@ -1,7 +1,7 @@
 <template>
   <div>
     <button @click="toggleDisplayNewOrderForm()">
-      Dodaj zamówienie
+      Realizuj zapotrzebowanie
     </button>
   </div>
 </template>

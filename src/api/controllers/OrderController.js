@@ -1,5 +1,9 @@
 const {connection} = require('../config/sqlConfig')
 
+// const getSqlCurrentDate = () => {
+//   return new Date().toISOString().slice(0, 19).replace('T', ' ');
+// }
+
 const getAllOrders = async (req, res) => {
   const sqlQuery = `SELECT * FROM orders`
   await connection.query(sqlQuery, (err, data) => {
@@ -44,7 +48,7 @@ const updateOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   const {id} = req.params
-  const sqlQuery = `DELETE FROM order WHERE id = ${id}`
+  const sqlQuery = `DELETE FROM orders WHERE id = ${id}`
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })

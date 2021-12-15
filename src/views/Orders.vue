@@ -27,7 +27,7 @@ const orders = ref(null)
 const headers = [
   'nazwa',
   'jednostka',
-  'ilość',
+  'liczba / ilość',
   'komentarz',
   'kto dodał',
   'kto ogarnia',

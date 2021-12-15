@@ -1,10 +1,13 @@
 <template>
-  <div v-if="showButton">
+  <div v-if="showButton" class="order-buttons-wrapper">
     <button @click="orderStatusChange">
       {{statusButtonText}}
     </button>
+    <button @click="cancelOrder">
+      Wycofaj
+    </button>
   </div>
-  <div v-else>
+  <div v-else class="order-complete">
     Ogarnięte
   </div>
 </template>
@@ -16,13 +19,17 @@ const props = defineProps({
   status: String
 })
 
-const emit = defineEmits(['status-change'])
+const emit = defineEmits(['status-change', 'cancel-order'])
 
 const statusButtonText = ref('')
 const showButton = ref(true)
 
 const orderStatusChange = () => {
   emit('status-change', props.status)
+}
+
+const cancelOrder = () => {
+  emit('cancel-order', props.status)
 }
 
 onMounted(() => {
@@ -35,5 +42,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
+.order-complete {
+  color: #2D6508;
+  font-weight: 700;
+}
+.order-buttons-wrapper {
+  display: flex;
+  gap: 10px;
+}
 </style>

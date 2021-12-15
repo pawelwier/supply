@@ -1,8 +1,5 @@
-export const formatDate = (date) => {
-  const minutes = date.getMinutes()
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getUTCHours() + 2}:${minutes >= 10 ? minutes : `0${minutes}`}`
-}
+import {addHours, format} from 'date-fns'
 
-export const getSqlCurrentDate = () => {
-  return new Date().toISOString().slice(0, 19).replace('T', ' ');
+export const formatDate = (date) => {
+  return format(addHours(date, 1), 'dd/MM/yyyy HH:mm')
 }

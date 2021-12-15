@@ -1,5 +1,5 @@
 export const demandHeaders = [
-  'produkt i ilość',
+  'produkt i liczba / ilość',
   'kategoria',
   'komentarz',
   'kto dodał',
