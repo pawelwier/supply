@@ -16,6 +16,9 @@
   <td>
     <ToggleUrgentButton v-if="demand.quantity" :urgent="demand.isUrgent" :id="demand.id" />
   </td>
+  <td>
+    <EditDemandButton v-if="demand.quantity" :demand="demand" @edit-demand="showEditDemandForm" />
+  </td>
 </template>
 
 <script setup>
@@ -24,16 +27,24 @@ import {demandFields} from '../../data/demandFields'
 import {formatDate} from "../../utils/formUtils";
 import AddOrderButton from "../orders/AddOrderButton";
 import ToggleUrgentButton from "../utils/ToggleUrgentButton";
+import EditDemandButton from "./EditDemandButton";
+import {useStore} from "vuex";
 
 const props = defineProps({
   demand: Object,
 })
+
+const store = useStore()
 
 const filteredFields = demandFields.filter(field => !['name', 'quantity', 'unit'].includes(field))
 
 const recordClass = ref(!props.demand.quantity ? 'inactive' : props.demand.isUrgent ? 'urgent' : '')
 
 const getFieldValue = (demand, value) => value === 'createdAt' ? formatDate(new Date(demand[value])) : demand[value]
+
+const showEditDemandForm = () => {
+  store.dispatch('setPopupContent', 'add-demand')
+}
 </script>
 
 <style scoped>
