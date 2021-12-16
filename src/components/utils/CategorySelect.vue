@@ -1,6 +1,5 @@
 <template>
   <div class="category-select">
-    {{props.category}}
     Wybierz kategorię:
     <select @change="categorySelect" v-model="selectedCategory">
       <option value=""></option>

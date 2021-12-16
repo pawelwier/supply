@@ -56,7 +56,6 @@ const orderStatusChange = async (prevStatus) => {
 const cancelOrder = async () => {
   await editDemand({
     quantity: demand.value.quantity + props.order.quantity,
-    isComplete: 0
   }, demand.value.id)
   await deleteOrder(props.order.id)
   window.location.reload()

@@ -1,14 +1,14 @@
 <template>
-  <div v-if="store.getters.getEditedORderId ? (demand && order) : demand">
+  <div v-if="demand && order">
     <h3>
-      Zamówienie dla {{demand.name}} ({{store.getters.getEditedOrderId ? order.quantity : demand.quantity}})
+      Zamówienie dla {{demand.name}} ({{store.getters.getEditedOrderId ? `${order.quantity} / ${demand.originalQuantity}` : demand.quantity}})
     </h3>
     <form @submit.prevent="submitOrder" class="order-form">
       <div>
         <label>
           Ile?
         </label>
-        <input @change="setQuantity" type="number" :max="demand.quantity" min="1" v-model="order.quantity" />
+        <input @change="setQuantity" type="number" :max="demand.quantity || order.quantity" min="1" v-model="order.quantity" />
         <button type="button" @click="setMaxQuantity">
           wszystko
         </button>
@@ -42,7 +42,7 @@
         <textarea v-model="order.comment" />
       </div>
       <div>
-        <button type="submit">Utwórz</button>
+        <button type="submit">{{store.getters.getEditedOrderId ? 'Edytuj' : 'Utwórz' }}</button>
       </div>
     </form>
   </div>
@@ -54,16 +54,17 @@ import {useStore} from 'vuex'
 import {supplyTeam} from '../../data/supplyTeam'
 import {supplyBases} from '../../data/supplyBases'
 import {getDemandById, editDemand} from '../../controllers/DemandController'
-import {addOrder, getOrderById} from '../../controllers/OrderController'
+import {addOrder, getOrderById, editOrder} from '../../controllers/OrderController'
 
 const demand = ref(null)
 const orderId = ref(null)
 const order = ref(null)
+const originalOrderQuantity = ref(0)
 
 const store = useStore()
 
 const setQuantity = (e) => {
-  const demandQuantity = demand.value.quantity
+  const demandQuantity = demand.value.quantity || order.value.quantity
   const quantity = e.target.value
   if (quantity > demandQuantity) {
     order.value = {
@@ -76,29 +77,34 @@ const setQuantity = (e) => {
 const setMaxQuantity = () => {
   order.value = {
     ...order.value,
-    quantity: demand.value.quantity
+    quantity: demand.value.quantity || order.value.quantity
   }
 }
 
 const submitOrder = async () => {
-  const {unit, id} = demand.value
-  const orderBody = {
-    ...order.value,
-    unit,
-    productId: id,
-  }
-  await addOrder(orderBody)
 
-  const {quantity} = demand.value
-  await editDemand({
-    quantity: quantity - orderBody.quantity
-  }, demand.value.id)
+  if (store.getters.getEditedOrderId) {
+    const {quantity, comment, deliveryBase, assignedTo} = order.value
+    await editOrder({
+      quantity,
+      comment,
+      deliveryBase,
+      assignedTo
+    }, order.value.id)
+  } else {
+    const {unit, id} = demand.value
+    const orderBody = {
+      ...order.value,
+      unit,
+      productId: id,
+    }
+    await addOrder(orderBody)
 
-  if (!(quantity - orderBody.quantity)) {
     await editDemand({
-      isComplete: 1
+      quantity: demand.value.quantity - orderBody.quantity
     }, demand.value.id)
   }
+
   window.location.reload()
 }
 
@@ -109,10 +115,15 @@ onMounted(async () => {
 
   orderId.value = store.getters.getEditedOrderId
   if (!orderId.value) {
-    demand.value = {
-      quantity: null,
-      assignedTo: null,
-      deliveryBase: null,
+    // demand.value = {
+    //   quantity: null,
+    //   assignedTo: null,
+    //   deliveryBase: null,
+    //   comment: '',
+    //   createdBy: 'pawel',
+    // }
+    order.value = {
+      quantity: 0,
       comment: '',
       createdBy: 'pawel',
     }
@@ -120,9 +131,9 @@ onMounted(async () => {
   }
   const orderRes = await getOrderById(orderId.value)
   const orderById = orderRes.data[0]
-  console.log(orderRes)
   if (!orderById) return
   order.value = orderById
+  originalOrderQuantity.value = orderById.quantity
 })
 </script>
 

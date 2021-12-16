@@ -16,7 +16,7 @@ const getDemandsByCategory = async (req, res) => {
 }
 
 const getCompleteDemands = async (req, res) => {
-  const sqlQuery = `SELECT * FROM products WHERE isComplete = "1"`
+  const sqlQuery = `SELECT * FROM products WHERE quantity = "0"`
   await connection.query(sqlQuery, (err, data) => {
     res.json({data})
   })
@@ -31,9 +31,9 @@ const getDemandById = async (req, res) => {
 }
 
 const addNewDemand = async (req, res) => {
-  const {name, unit, quantity, comment, category, isComplete} = req.body
+  const {name, unit, quantity, comment, category} = req.body
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  const sqlQuery = `INSERT INTO products (name, unit, quantity, originalQuantity, comment, category, createdBy, createdAt, isComplete) VALUES ("${name}", "${unit}", ${Number(quantity)}, ${Number(quantity)}, "${comment}", "${category}", "pawel", "${currentDate}", ${Number(isComplete)})`
+  const sqlQuery = `INSERT INTO products (name, unit, quantity, originalQuantity, comment, category, createdBy, createdAt) VALUES ("${name}", "${unit}", ${Number(quantity)}, ${Number(quantity)}, "${comment}", "${category}", "pawel", "${currentDate}")`
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })

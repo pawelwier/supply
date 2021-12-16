@@ -75,7 +75,6 @@ onMounted(async () => {
       quantity: null,
       comment: '',
       createdBy: 'pawel',
-      isComplete: 0,
     }
     return
   }

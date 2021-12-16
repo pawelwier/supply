@@ -29,7 +29,6 @@ CREATE TABLE supply.Demands (
 	orderFinishedAt DATETIME NULL,
 	category varchar(100) NULL
 	isUrgent bool
-	isComplete bool
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
