@@ -1,14 +1,14 @@
 <template>
   <div v-if="demand && order">
     <h3>
-      Zamówienie dla {{demand.name}} ({{store.getters.getEditedOrderId ? `${order.quantity} / ${demand.originalQuantity}` : demand.quantity}})
+      Zamówienie dla {{demand.name}} ({{store.getters.getEditedOrderId ? `${order.quantity} / ${totalDemandOrderQuantity}` : demand.quantity}})
     </h3>
     <form @submit.prevent="submitOrder" class="order-form">
       <div>
         <label>
           Ile?
         </label>
-        <input @change="setQuantity" type="number" :max="demand.quantity || order.quantity" min="1" v-model="order.quantity" />
+        <input @change="setQuantity" type="number" :max="orderTotalQuantity" min="1" v-model="order.quantity" />
         <button type="button" @click="setMaxQuantity">
           wszystko
         </button>
@@ -54,17 +54,23 @@ import {useStore} from 'vuex'
 import {supplyTeam} from '../../data/supplyTeam'
 import {supplyBases} from '../../data/supplyBases'
 import {getDemandById, editDemand} from '../../controllers/DemandController'
-import {addOrder, getOrderById, editOrder} from '../../controllers/OrderController'
+import {addOrder, getOrderById, editOrder, getOrdersByDemandId} from '../../controllers/OrderController'
 
 const demand = ref(null)
 const orderId = ref(null)
 const order = ref(null)
-const originalOrderQuantity = ref(0)
+const orderTotalQuantity = ref(0)
+const totalDemandOrderQuantity = ref(0)
 
 const store = useStore()
 
+const getDemandOrders = async () => {
+  const res = await getOrdersByDemandId(demand.value.id)
+  return res.data
+}
+
 const setQuantity = (e) => {
-  const demandQuantity = demand.value.quantity || order.value.quantity
+  const demandQuantity = orderTotalQuantity.value
   const quantity = e.target.value
   if (quantity > demandQuantity) {
     order.value = {
@@ -77,7 +83,7 @@ const setQuantity = (e) => {
 const setMaxQuantity = () => {
   order.value = {
     ...order.value,
-    quantity: demand.value.quantity || order.value.quantity
+    quantity: orderTotalQuantity.value
   }
 }
 
@@ -133,7 +139,11 @@ onMounted(async () => {
   const orderById = orderRes.data[0]
   if (!orderById) return
   order.value = orderById
-  originalOrderQuantity.value = orderById.quantity
+  orderTotalQuantity.value = orderById.quantity + demand.value.quantity
+
+  const totalRes = await getDemandOrders()
+  totalDemandOrderQuantity.value = totalRes.map(({quantity}) => quantity).reduce((a, b) => a + b) + demand.value.quantity
+
 })
 </script>
 

@@ -2,7 +2,7 @@
   <div class="archive-record-wrapper">
     <div class="archive-record">
       <div>
-        {{`${demand.name}: ${demand.originalQuantity} x ${demand.unit}`}}
+        {{`${demand.name}: ${demandTotal} x ${demand.unit}`}}
       </div>
       <div v-for="(field, i) in filteredFields" :key="i">
         {{getFieldValue(demand, field)}}
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import {defineProps, ref} from "vue";
+import {defineProps, onMounted, ref} from "vue";
 import {demandFields} from "../../data/demandFields";
 import {formatDate} from "../../utils/formUtils";
 import {getOrdersByDemandId} from "../../controllers/OrderController";
@@ -28,6 +28,7 @@ const props = defineProps({
 
 const orders = ref([])
 const showOrders = ref(false)
+const demandTotal = ref(0)
 
 const getDemandOrders = async () => {
   showOrders.value = !showOrders.value
@@ -40,6 +41,11 @@ const getFieldValue = (demand, value) => value === 'createdAt' ? formatDate(new 
 
 // TODO: duplicates with DemandRecord
 const filteredFields = demandFields.filter(field => !['name', 'quantity', 'unit', 'createdBy'].includes(field))
+
+onMounted(async () => {
+  await getDemandOrders()
+  demandTotal.value = orders.value.map(({quantity}) => quantity).reduce((a, b) => a + b)
+})
 
 </script>
 
