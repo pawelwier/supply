@@ -8,7 +8,7 @@
         <label>
           Ile?
         </label>
-        <input @change="setQuantity" type="number" :max="orderTotalQuantity" min="1" v-model="order.quantity" />
+        <input @change="setQuantity" type="number" :max="store.getters.getEditedOrderId ? orderTotalQuantity : demand.quantity" min="1" v-model="order.quantity" />
         <button type="button" @click="setMaxQuantity">
           wszystko
         </button>
@@ -28,12 +28,19 @@
         <label>
           Skąd?
         </label>
-        <select v-model="order.deliveryBase">
+        <select v-model="order.deliveryBase" :disabled="outerDeliverySource">
           <option> - </option>
           <option v-for="(base, i) in supplyBases" :key="i">
             {{base}}
           </option>
         </select>
+        <span>
+        <input type="checkbox" @change="deliveryBaseTypeSelect" :checked="outerDeliverySource" />
+        <span>
+          inne:
+        </span>
+        <input v-if="outerDeliverySource" v-model="order.deliveryBase"/>
+        </span>
       </div>
       <div>
         <label>
@@ -41,6 +48,7 @@
         </label>
         <textarea v-model="order.comment" />
       </div>
+      <div v-if="showErrorMessage" class="error-message">Uzupełnij brakujące pola</div>
       <div>
         <button type="submit">{{store.getters.getEditedOrderId ? 'Edytuj' : 'Utwórz' }}</button>
       </div>
@@ -59,8 +67,12 @@ import {addOrder, getOrderById, editOrder, getOrdersByDemandId} from '../../cont
 const demand = ref(null)
 const orderId = ref(null)
 const order = ref(null)
+const outerDeliverySource = ref(false)
 const orderTotalQuantity = ref(0)
 const totalDemandOrderQuantity = ref(0)
+const originalOrderQuantity = ref(0)
+const showErrorMessage = ref(false)
+
 
 const store = useStore()
 
@@ -70,7 +82,7 @@ const getDemandOrders = async () => {
 }
 
 const setQuantity = (e) => {
-  const demandQuantity = orderTotalQuantity.value
+  const demandQuantity = store.getters.getEditedOrderId ? orderTotalQuantity.value : demand.value.quantity
   const quantity = e.target.value
   if (quantity > demandQuantity) {
     order.value = {
@@ -80,23 +92,35 @@ const setQuantity = (e) => {
   }
 }
 
+const deliveryBaseTypeSelect = (e) => {
+  const isOuter = e.target.checked
+  outerDeliverySource.value = isOuter
+  order.value.deliveryBase = ''
+}
+
 const setMaxQuantity = () => {
   order.value = {
     ...order.value,
-    quantity: orderTotalQuantity.value
+    quantity: store.getters.getEditedOrderId ? orderTotalQuantity.value : demand.value.quantity
   }
 }
 
 const submitOrder = async () => {
-
+  const {quantity, comment, deliveryBase, assignedTo} = order.value
+  if ([quantity, deliveryBase, assignedTo].some(field => !field)) {
+    showErrorMessage.value = true
+    return
+  }
   if (store.getters.getEditedOrderId) {
-    const {quantity, comment, deliveryBase, assignedTo} = order.value
     await editOrder({
       quantity,
       comment,
       deliveryBase,
       assignedTo
     }, order.value.id)
+    if (originalOrderQuantity.value !== quantity) {
+      console.log(originalOrderQuantity.value - quantity)
+    }
   } else {
     const {unit, id} = demand.value
     const orderBody = {
@@ -111,6 +135,10 @@ const submitOrder = async () => {
     }, demand.value.id)
   }
 
+  await editDemand({
+    quantity: demand.value.quantity + (originalOrderQuantity.value - order.value.quantity)
+  }, demand.value.id)
+
   window.location.reload()
 }
 
@@ -121,13 +149,6 @@ onMounted(async () => {
 
   orderId.value = store.getters.getEditedOrderId
   if (!orderId.value) {
-    // demand.value = {
-    //   quantity: null,
-    //   assignedTo: null,
-    //   deliveryBase: null,
-    //   comment: '',
-    //   createdBy: 'pawel',
-    // }
     order.value = {
       quantity: 0,
       comment: '',
@@ -139,11 +160,13 @@ onMounted(async () => {
   const orderById = orderRes.data[0]
   if (!orderById) return
   order.value = orderById
+  originalOrderQuantity.value = orderById.quantity
   orderTotalQuantity.value = orderById.quantity + demand.value.quantity
 
   const totalRes = await getDemandOrders()
   totalDemandOrderQuantity.value = totalRes.map(({quantity}) => quantity).reduce((a, b) => a + b) + demand.value.quantity
-
+  console.log(order.value.deliveryBase)
+  outerDeliverySource.value = !supplyBases.includes(order.value.deliveryBase)
 })
 </script>
 
@@ -156,5 +179,8 @@ onMounted(async () => {
   align-items: center;
   gap: 20px;
   margin-bottom: 10px;
+}
+.error-message {
+  color: red;
 }
 </style>

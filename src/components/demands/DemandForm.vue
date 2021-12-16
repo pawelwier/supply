@@ -1,5 +1,6 @@
 <template>
   <div v-if="demand">
+    <h3>Dodaj nowe zapotrzebowanie</h3>
     <form @submit.prevent="submitDemand" class="demand-form">
       <div>
         <label>
@@ -26,6 +27,7 @@
         </label>
         <textarea v-model="demand.comment" />
       </div>
+      <div v-if="showErrorMessage" class="error-message">Uzupełnij brakujące pola</div>
       <div>
         <button type="submit">{{store.getters.getEditedDemandId ? 'Edytuj' : 'Utwórz' }}</button>
       </div>
@@ -43,6 +45,7 @@ const store = useStore()
 
 const demandId = ref(null)
 const demand = ref(null)
+const showErrorMessage = ref(false)
 
 const categorySelect = (category) => {
   demand.value = {
@@ -52,10 +55,14 @@ const categorySelect = (category) => {
 }
 
 const submitDemand = async () => {
+  const {name, quantity, unit, category, comment} = demand.value
+  if ([name, quantity, unit, category].some(field => !field)) {
+    showErrorMessage.value = true
+    return
+  }
   if (!store.getters.getEditedDemandId) {
     await addDemand(demand.value)
   } else {
-    const {name, quantity, unit, category, comment} = demand.value
     await editDemand({
       name,
       quantity,
@@ -64,6 +71,7 @@ const submitDemand = async () => {
       comment,
     }, demandId.value)
     store.dispatch('setEditedDemandId', null)
+    showErrorMessage.value = false
   }
   window.location.reload()
 }
@@ -94,5 +102,8 @@ onMounted(async () => {
   align-items: center;
   gap: 20px;
   margin-bottom: 10px;
+}
+.error-message {
+  color: red;
 }
 </style>

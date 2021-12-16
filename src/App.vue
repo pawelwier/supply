@@ -1,6 +1,6 @@
 <template>
   <PopUp v-if="displayedComponent">
-    <component :is="displayedComponent === 'add-demand' ? NewDemandForm : AddOrderForm" />
+    <component :is="displayedComponent === 'add-demand' ? NewDemandForm : OrderForm" />
   </PopUp>
   <div id="nav">
     <router-link to="/">Zapotrzebowanie</router-link> |
@@ -14,8 +14,8 @@
 import {useStore} from 'vuex'
 import {ref} from 'vue'
 import PopUp from "./components/utils/PopUp";
-import NewDemandForm from "./components/demands/AddDemandForm";
-import AddOrderForm from "./components/orders/AddOrderForm";
+import NewDemandForm from "./components/demands/DemandForm";
+import OrderForm from "./components/orders/OrderForm";
 
 const displayedComponent = ref(null)
 const store = useStore()

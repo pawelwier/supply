@@ -1,9 +1,6 @@
 <template>
   <div class="popup-wrapper">
     <div>
-      Nagłówek
-    </div>
-    <div>
       <slot />
     </div>
     <div>
@@ -27,7 +24,7 @@ const closePopup = () => {
 
 <style scoped>
 .popup-wrapper {
-  position: absolute;
+  position: fixed;
   top: 50px;
   left: 20%;
   width: 60%;

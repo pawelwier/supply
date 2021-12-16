@@ -13,7 +13,7 @@
   <td class="left-break">
     <AddOrderButton v-if="demand.quantity" :id="demand.id" :isComplete="!demand.quantity" />
   </td>
-  <td class="urgent-background">
+  <td :class="demand.quantity ? 'urgent-background' : ''">
     <ToggleUrgentButton v-if="demand.quantity" :urgent="demand.isUrgent" :id="demand.id" />
   </td>
   <td>

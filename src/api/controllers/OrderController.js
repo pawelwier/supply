@@ -48,7 +48,6 @@ const updateOrder = async (req, res) => {
   const updateString = Object.keys(req.body).map(key => `${key} = "${req.body[key]}"`).join(', ')
   const {id} = req.params
   const sqlQuery = `UPDATE orders SET ${updateString} WHERE id = ${id}`
-  console.log(sqlQuery)
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })
