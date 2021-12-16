@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="demand">
     <form @submit.prevent="submitDemand" class="demand-form">
       <div>
         <label>
@@ -19,7 +19,7 @@
         </label>
         <input v-model="demand.unit">
       </div>
-      <CategorySelect @change="categorySelect" />
+      <CategorySelect @change="categorySelect" :category="store.getters.getEditedDemandId ? demand.category : null" />
       <div>
         <label>
           Opis
@@ -27,24 +27,22 @@
         <textarea v-model="demand.comment" />
       </div>
       <div>
-        <button type="submit">Utwórz</button>
+        <button type="submit">{{store.getters.getEditedDemandId ? 'Edytuj' : 'Utwórz' }}</button>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
-import {addDemand} from "../../controllers/DemandController";
+import {onMounted, ref} from "vue";
+import {useStore} from "vuex";
+import {addDemand, getDemandById, editDemand} from "../../controllers/DemandController";
 import CategorySelect from "../utils/CategorySelect";
 
-const demand = ref({
-  quantity: null,
-  comment: '',
-  createdBy: 'pawel',
-  isComplete: 0,
+const store = useStore()
 
-})
+const demandId = ref(null)
+const demand = ref(null)
 
 const categorySelect = (category) => {
   demand.value = {
@@ -54,9 +52,38 @@ const categorySelect = (category) => {
 }
 
 const submitDemand = async () => {
-  await addDemand(demand.value)
+  if (!store.getters.getEditedDemandId) {
+    await addDemand(demand.value)
+  } else {
+    const {name, quantity, unit, category, comment} = demand.value
+    await editDemand({
+      name,
+      quantity,
+      unit,
+      category,
+      comment,
+    }, demandId.value)
+    store.dispatch('setEditedDemandId', null)
+  }
   window.location.reload()
 }
+
+onMounted(async () => {
+  demandId.value = store.getters.getEditedDemandId
+  if (!demandId.value) {
+    demand.value = {
+      quantity: null,
+      comment: '',
+      createdBy: 'pawel',
+      isComplete: 0,
+    }
+    return
+  }
+  const res = await getDemandById(demandId.value)
+  const demandById = res.data[0]
+  if (!demandById) return
+  demand.value = demandById
+})
 </script>
 
 <style scoped>

@@ -13,6 +13,7 @@
       :status="order.status"
       @status-change="orderStatusChange"
       @cancel-order="cancelOrder"
+      @edit-order="onEditOrder"
     />
   </td>
   <td>
@@ -22,6 +23,7 @@
 
 <script setup>
 import {defineProps, onMounted, ref} from 'vue'
+import {useStore} from "vuex";
 import {orderFields} from '../../data/orderFields'
 import {formatDate} from "../../utils/formUtils";
 import OrderStatusButtons from "../../components/orders/OrderStatusButtons";
@@ -31,6 +33,9 @@ import {deleteOrder, editOrder,} from "../../controllers/OrderController";
 const props = defineProps({
   order: Object,
 })
+
+const store = useStore()
+
 const demand = ref(null)
 
 const getFieldValue = (order, value) => value === 'createdAt' ? formatDate(new Date(order[value])) : order[value]
@@ -49,10 +54,20 @@ const orderStatusChange = async (prevStatus) => {
 }
 
 const cancelOrder = async () => {
-  await editDemand({quantity: demand.value.quantity + props.order.quantity}, demand.value.id)
-  await editDemand({isComplete: 0}, demand.value.id)
+  await editDemand({
+    quantity: demand.value.quantity + props.order.quantity,
+    isComplete: 0
+  }, demand.value.id)
   await deleteOrder(props.order.id)
   window.location.reload()
+}
+
+const onEditOrder = () => {
+  store.dispatch('setEditedOrderId', props.order.id)
+  store.dispatch('setPopupContent', {
+    type: 'add-order',
+    data: props.order.productId,
+  })
 }
 
 onMounted(async () => {

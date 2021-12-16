@@ -1,7 +1,7 @@
 <template>
-  <div v-if="demand">
+  <div v-if="store.getters.getEditedORderId ? (demand && order) : demand">
     <h3>
-      Zamówienie dla {{demand.name}} ({{demand.quantity}})
+      Zamówienie dla {{demand.name}} ({{store.getters.getEditedOrderId ? order.quantity : demand.quantity}})
     </h3>
     <form @submit.prevent="submitOrder" class="order-form">
       <div>
@@ -54,17 +54,11 @@ import {useStore} from 'vuex'
 import {supplyTeam} from '../../data/supplyTeam'
 import {supplyBases} from '../../data/supplyBases'
 import {getDemandById, editDemand} from '../../controllers/DemandController'
-import {addOrder} from '../../controllers/OrderController'
+import {addOrder, getOrderById} from '../../controllers/OrderController'
 
 const demand = ref(null)
-const order = ref({
-  quantity: null,
-  assignedTo: null,
-  deliveryBase: null,
-  comment: '',
-  createdBy: 'pawel',
-
-})
+const orderId = ref(null)
+const order = ref(null)
 
 const store = useStore()
 
@@ -110,8 +104,25 @@ const submitOrder = async () => {
 
 onMounted(async () => {
   const id = store.getters.getPopupContent.data
-  const res = await getDemandById(id)
-  demand.value = res.data[0]
+  const demandRes = await getDemandById(id)
+  demand.value = demandRes.data[0]
+
+  orderId.value = store.getters.getEditedOrderId
+  if (!orderId.value) {
+    demand.value = {
+      quantity: null,
+      assignedTo: null,
+      deliveryBase: null,
+      comment: '',
+      createdBy: 'pawel',
+    }
+    return
+  }
+  const orderRes = await getOrderById(orderId.value)
+  const orderById = orderRes.data[0]
+  console.log(orderRes)
+  if (!orderById) return
+  order.value = orderById
 })
 </script>
 

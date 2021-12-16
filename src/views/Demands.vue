@@ -8,7 +8,7 @@
           {{header}}
         </th>
         <th></th>
-        <th>
+        <th class="urgent-background">
           Pilne?
         </th>
       </tr>
@@ -46,6 +46,9 @@ onMounted(async () => {
 <style>
 .category-select {
   margin-bottom: 20px;
+}
+.urgent-background {
+  background-color: #E2866F47;
 }
 th {
   padding: 0 20px;

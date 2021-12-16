@@ -40,10 +40,9 @@ const addNewDemand = async (req, res) => {
 }
 
 const updateDemand = async (req, res) => {
-  const field = Object.keys(req.body)
-  const value = req.body[field]
+  const updateString = Object.keys(req.body).map(key => `${key} = "${req.body[key]}"`).join(', ')
   const {id} = req.params
-  const sqlQuery = `UPDATE products SET ${field} = "${value}" WHERE id = ${id}`
+  const sqlQuery = `UPDATE products SET ${updateString} WHERE id = ${id}`
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })

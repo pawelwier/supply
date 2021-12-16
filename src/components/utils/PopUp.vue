@@ -18,6 +18,8 @@ import {useStore} from "vuex";
 const store = useStore()
 
 const closePopup = () => {
+  store.dispatch('setEditedDemandId', null)
+  store.dispatch('setEditedOrderId', null)
   store.dispatch('setPopupContent', null)
 }
 

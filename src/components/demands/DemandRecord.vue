@@ -13,7 +13,7 @@
   <td class="left-break">
     <AddOrderButton v-if="demand.quantity" :id="demand.id" :isComplete="demand.isComplete" />
   </td>
-  <td>
+  <td class="urgent-background">
     <ToggleUrgentButton v-if="demand.quantity" :urgent="demand.isUrgent" :id="demand.id" />
   </td>
   <td>
@@ -43,6 +43,7 @@ const recordClass = ref(!props.demand.quantity ? 'inactive' : props.demand.isUrg
 const getFieldValue = (demand, value) => value === 'createdAt' ? formatDate(new Date(demand[value])) : demand[value]
 
 const showEditDemandForm = () => {
+  store.dispatch('setEditedDemandId', props.demand.id)
   store.dispatch('setPopupContent', 'add-demand')
 }
 </script>

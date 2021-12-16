@@ -11,6 +11,14 @@ const getAllOrders = async (req, res) => {
   })
 }
 
+const getOrderById = async (req, res) => {
+  const {id} = req.params
+  const sqlQuery = `SELECT * FROM orders WHERE id = ${id}`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
 const getOrdersByDemandCategory = async (req, res) => {
   const {category} = req.params
   const sqlQuery = `SELECT a.* FROM orders a INNER JOIN products b on a.productId=b.id WHERE b.category = "${category}"`
@@ -37,10 +45,9 @@ const addNewOrder = async (req, res) => {
 }
 
 const updateOrder = async (req, res) => {
-  const field = Object.keys(req.body)
-  const value = req.body[field]
+  const updateString = Object.keys(req.body).map(key => `${key} = "${req.body[key]}"`).join(', ')
   const {id} = req.params
-  const sqlQuery = `UPDATE orders SET ${field} = "${value}" WHERE id = ${id}`
+  const sqlQuery = `UPDATE orders SET ${updateString} WHERE id = ${id}`
   await connection.query(sqlQuery, (err, rows) => {
     res.json({rows})
   })
@@ -56,6 +63,7 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
   getAllOrders,
+  getOrderById,
   getOrdersByDemandId,
   getOrdersByDemandCategory,
   addNewOrder,

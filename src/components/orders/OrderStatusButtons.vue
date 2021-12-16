@@ -3,6 +3,7 @@
     <button @click="orderStatusChange">
       {{statusButtonText}}
     </button>
+    <EditOrderButton @edit-order="emitEditOrder" />
     <button @click="cancelOrder">
       Wycofaj
     </button>
@@ -14,12 +15,13 @@
 
 <script setup>
 import {ref, defineProps, onMounted, defineEmits} from "vue";
+import EditOrderButton from "./EditOrderButton";
 
 const props = defineProps({
   status: String
 })
 
-const emit = defineEmits(['status-change', 'cancel-order'])
+const emit = defineEmits(['status-change', 'cancel-order', 'edit-order'])
 
 const statusButtonText = ref('')
 const showButton = ref(true)
@@ -30,6 +32,10 @@ const orderStatusChange = () => {
 
 const cancelOrder = () => {
   emit('cancel-order', props.status)
+}
+
+const emitEditOrder = () => {
+  emit('edit-order')
 }
 
 onMounted(() => {
