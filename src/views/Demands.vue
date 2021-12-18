@@ -1,5 +1,8 @@
 <template>
-  <CategorySelect @change="categorySelect" />
+  <div class="header-elements">
+    <a href="#" @click="toggleCompleteVisible">{{toggleVisibleText}}</a>
+    <CategorySelect @change="categorySelect" />
+  </div>
   <div class="home" v-if="demands">
     <table>
       <tbody>
@@ -23,16 +26,25 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-import {getAllDemands, getDemandsByCategory} from '../controllers/DemandController'
+import {getAllDemands, getDemandsByCategory, getActiveDemands} from '../controllers/DemandController'
 import DemandRecord from "../components/demands/DemandRecord";
 import AddDemandButton from "../components/demands/AddDemandButton";
 import CategorySelect from "../components/utils/CategorySelect";
 import {demandHeaders} from "../data/demandHeaders";
 
 const demands = ref(null)
+const showComplete = ref(true)
+const toggleVisibleText = ref('Ukryj nieaktualne')
 
 const categorySelect = async (category) => {
   const res = category ? await getDemandsByCategory(category) : await getAllDemands()
+  demands.value = res.data
+}
+
+const toggleCompleteVisible = async () => {
+  showComplete.value = !showComplete.value
+  toggleVisibleText.value = showComplete.value ? 'Ukryj nieaktualne' : 'Pokaż nieaktualne'
+  const res = !showComplete.value ? await getActiveDemands() : await getAllDemands()
   demands.value = res.data
 }
 
@@ -44,11 +56,16 @@ onMounted(async () => {
 </script>
 
 <style>
-.category-select {
-  margin-bottom: 20px;
-}
 .urgent-background {
   background-color: #E2866F47;
+}
+.header-elements {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 10px 0;
+  background-color: #daf3e4;
+  margin-bottom: 10px;
 }
 th {
   padding: 0 20px;

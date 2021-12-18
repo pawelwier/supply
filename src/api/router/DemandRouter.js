@@ -1,6 +1,7 @@
 const {
   getAllDemands,
   getCompleteDemands,
+  getActiveDemands,
   getDemandsByCategory,
   getDemandById,
   addNewDemand,
@@ -14,6 +15,7 @@ const demandRouter = express.Router()
 demandRouter.get('/', getAllDemands)
 demandRouter.get('/category/:category', getDemandsByCategory)
 demandRouter.get('/complete', getCompleteDemands)
+demandRouter.get('/active', getActiveDemands)
 demandRouter.get('/:id', getDemandById)
 demandRouter.post('/', addNewDemand)
 demandRouter.put('/:id', updateDemand)

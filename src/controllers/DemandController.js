@@ -8,6 +8,10 @@ export async function getCompleteDemands() {
   return await makeApiRequest('get', getApiUrl('demands/complete'))
 }
 
+export async function getActiveDemands() {
+  return await makeApiRequest('get', getApiUrl('demands/active'))
+}
+
 export async function getDemandsByCategory(category) {
   return await makeApiRequest('get', getApiUrl(`demands/category/${category}`))
 }

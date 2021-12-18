@@ -22,6 +22,13 @@ const getCompleteDemands = async (req, res) => {
   })
 }
 
+const getActiveDemands = async (req, res) => {
+  const sqlQuery = `SELECT * FROM products WHERE quantity > 0`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
 const getDemandById = async (req, res) => {
   const {id} = req.params
   const sqlQuery = `SELECT * FROM products WHERE id = ${id}`
@@ -60,6 +67,7 @@ const deleteDemand = async (req, res) => {
 module.exports = {
   getAllDemands,
   getCompleteDemands,
+  getActiveDemands,
   getDemandsByCategory,
   getDemandById,
   addNewDemand,

@@ -1,5 +1,5 @@
 <template>
-  <div class="category-select">
+  <div>
     Wybierz kategorię:
     <select @change="categorySelect" v-model="selectedCategory">
       <option value=""></option>
