@@ -59,8 +59,6 @@
 <script setup>
 import {onMounted, ref} from 'vue'
 import {useStore} from 'vuex'
-import {supplyTeam} from '../../data/supplyTeam'
-import {supplyBases} from '../../data/supplyBases'
 import {getDemandById, editDemand} from '../../controllers/DemandController'
 import {addOrder, getOrderById, editOrder, getOrdersByDemandId} from '../../controllers/OrderController'
 
@@ -73,8 +71,9 @@ const totalDemandOrderQuantity = ref(0)
 const originalOrderQuantity = ref(0)
 const showErrorMessage = ref(false)
 
-
 const store = useStore()
+const supplyBases = store.getters.supplyBases.split(',')
+const supplyTeam = store.getters.supplyTeam.split(',')
 
 const getDemandOrders = async () => {
   const res = await getOrdersByDemandId(demand.value.id)
@@ -165,7 +164,6 @@ onMounted(async () => {
 
   const totalRes = await getDemandOrders()
   totalDemandOrderQuantity.value = totalRes.map(({quantity}) => quantity).reduce((a, b) => a + b) + demand.value.quantity
-  console.log(order.value.deliveryBase)
   outerDeliverySource.value = !supplyBases.includes(order.value.deliveryBase)
 })
 </script>

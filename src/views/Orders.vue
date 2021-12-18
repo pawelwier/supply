@@ -1,7 +1,6 @@
 <template>
-  <div class="home" v-if="orders">
+  <div class="home" v-if="orders && loggedIn">
     <CategorySelect @change="categorySelect" />
-
     <table>
       <tbody>
       <tr>
@@ -15,15 +14,22 @@
       </tbody>
     </table>
   </div>
+  <LoginRedirect v-else />
 </template>
 
 <script setup>
 import {onMounted, ref} from 'vue'
+import {useStore} from "vuex";
 import {getAllOrders, getOrdersByCategory} from '../controllers/OrderController'
 import OrderRecord from "../components/orders/OrderRecord";
 import CategorySelect from "../components/utils/CategorySelect";
+import LoginRedirect from "../components/utils/LoginRedirect";
+
+const store = useStore()
 
 const orders = ref(null)
+const loggedIn = ref(false)
+
 const headers = [
   'nazwa',
   'jednostka',
@@ -42,6 +48,7 @@ const categorySelect = async (category) => {
 }
 
 onMounted(async () => {
+  loggedIn.value = store.getters.isLoggedIn
   const res = await getAllOrders()
   orders.value = res.data
 })

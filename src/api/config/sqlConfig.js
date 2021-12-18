@@ -54,4 +54,18 @@ ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_0900_ai_ci;
 
+// users
+CREATE TABLE supply.users (
+	id BIGINT UNSIGNED auto_increment primary key NOT NULL,
+	name varchar(100) NOT NULL,
+	email varchar(100) NOT NULL,
+	phoneNumber INT UNSIGNED NULL,
+	password varchar(100) NOT NULL,
+	createdAt DATETIME NOT NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+
 * */

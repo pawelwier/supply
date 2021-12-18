@@ -27,6 +27,18 @@ store.watch(
 </script>
 
 <style>
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #daf3e4;
+}
+.header-elements {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 10px;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
