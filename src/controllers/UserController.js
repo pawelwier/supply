@@ -5,7 +5,7 @@ export async function getUserById(id) {
 }
 
 export async function checkAuth(auth) {
-  return await makeApiRequest('post', getApiUrl('users/auth'), {...auth})
+  return await makeApiRequest('post', getApiUrl('users/auth'), auth)
 }
 
 export async function addUser(user) {

@@ -8,7 +8,7 @@ const getUserById = async (req, res) => {
   })
 }
 
-const ValidateUser = async (req, res) => {
+const validateUser = async (req, res) => {
   const {name, password} = req.body
   const sqlQuery = `SELECT * FROM users WHERE name = "${name}" AND password = "${password}"`
   await connection.query(sqlQuery, (err, data) => {
@@ -33,6 +33,6 @@ const addNewUser = async (req, res) => {
 
 module.exports = {
   getUserById,
-  ValidateUser,
+  validateUser,
   addNewUser,
 }

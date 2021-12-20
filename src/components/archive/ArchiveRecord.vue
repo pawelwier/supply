@@ -27,7 +27,7 @@ const props = defineProps({
 })
 
 const orders = ref([])
-const showOrders = ref(false)
+const showOrders = ref(true)
 const demandTotal = ref(0)
 
 const getDemandOrders = async () => {

@@ -2,12 +2,9 @@
   <PopUp v-if="displayedComponent">
     <component :is="displayedComponent === 'add-demand' ? NewDemandForm : OrderForm" />
   </PopUp>
-  <div id="nav">
-    <router-link to="/">Zapotrzebowanie</router-link> |
-    <router-link to="/orders">Zamówienia w toku</router-link> |
-    <router-link to="/archive">Archiwum</router-link>
-  </div>
-  <router-view/>
+  <DefaultLayout>
+    <router-view/>
+  </DefaultLayout>
 </template>
 
 <script setup>
@@ -16,6 +13,7 @@ import {ref} from 'vue'
 import PopUp from "./components/utils/PopUp";
 import NewDemandForm from "./components/demands/DemandForm";
 import OrderForm from "./components/orders/OrderForm";
+import DefaultLayout from "./components/layouts/DefaultLayout";
 
 const displayedComponent = ref(null)
 const store = useStore()

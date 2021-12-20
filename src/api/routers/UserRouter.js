@@ -1,14 +1,14 @@
-const {
-  getUserById,
-  ValidateUser,
-  addNewUser,
-} = require('../controllers/UserController')
-
 const express = require('express')
 const userRouter = express.Router()
 
+const {
+  getUserById,
+  validateUser,
+  addNewUser,
+} = require('../controllers/UserController')
+
 userRouter.get('/:id', getUserById)
-userRouter.post('/auth', ValidateUser)
+userRouter.post('/auth', validateUser)
 userRouter.post('/', addNewUser)
 
 module.exports = {

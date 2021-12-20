@@ -1,3 +1,6 @@
+const express = require('express')
+const demandRouter = express.Router()
+
 const {
   getAllDemands,
   getCompleteDemands,
@@ -8,9 +11,6 @@ const {
   updateDemand,
   deleteDemand,
 } = require('../controllers/DemandController')
-
-const express = require('express')
-const demandRouter = express.Router()
 
 demandRouter.get('/', getAllDemands)
 demandRouter.get('/category/:category', getDemandsByCategory)

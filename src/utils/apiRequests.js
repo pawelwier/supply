@@ -11,5 +11,3 @@ export const makeApiRequest = async (method, url, data) => {
 }
 
 export const getApiUrl = url => `${process.env.VUE_APP_API_HOST}/${url}`
-
-

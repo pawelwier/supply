@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Demands from '../views/Demands.vue'
 import Orders from '../views/Orders.vue'
 import Archive from '../views/Archive.vue'
-import Login from '../views/Login.vue'
 
 const routes = [
   {
@@ -19,11 +18,6 @@ const routes = [
     path: '/archive',
     name: 'Archive',
     component: Archive
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
   },
 ]
 

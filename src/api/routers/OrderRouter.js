@@ -1,3 +1,6 @@
+const express = require('express')
+const orderRouter = express.Router()
+
 const {
   getAllOrders,
   getOrderById,
@@ -7,9 +10,6 @@ const {
   updateOrder,
   deleteOrder,
 } = require('../controllers/OrderController')
-
-const express = require('express')
-const orderRouter = express.Router()
 
 orderRouter.get('/', getAllOrders)
 orderRouter.get('/:id', getOrderById)
