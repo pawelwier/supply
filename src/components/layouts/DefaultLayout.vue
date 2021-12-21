@@ -1,9 +1,9 @@
 <template>
   <div v-if="loggedIn">
-    <div>
+    <div class="logout-element">
       zalogowano jako: {{loggedInUser.name}}
+      <LogoutButton />
     </div>
-    <LogoutButton />
     <div id="nav">
       <router-link to="/">Zapotrzebowanie</router-link> |
       <router-link to="/orders">Zamówienia w toku</router-link> |
@@ -32,5 +32,8 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
+.logout-element {
+  background-color: #BEAC4D49;
+  padding: 10px 0;
+}
 </style>

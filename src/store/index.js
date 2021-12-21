@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import UniversalCookie from 'universal-cookie'
+import {getAllUsers} from "../controllers/UserController";
 
 export default createStore({
   state: {
@@ -68,8 +69,11 @@ export default createStore({
     supplyBases() {
       return process.env.VUE_APP_SUPPLY_BASES
     },
-    supplyTeam() {
-      return process.env.VUE_APP_SUPPLY_TEAM
+    async supplyTeam() {
+      const res = await getAllUsers()
+      console.log(res.data.map(({name}) => name))
+      return res.data.map(({name}) => name)
+      // return process.env.VUE_APP_SUPPLY_TEAM
     },
   }
 })

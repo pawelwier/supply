@@ -70,10 +70,10 @@ const orderTotalQuantity = ref(0)
 const totalDemandOrderQuantity = ref(0)
 const originalOrderQuantity = ref(0)
 const showErrorMessage = ref(false)
+const supplyTeam = ref([])
 
 const store = useStore()
 const supplyBases = store.getters.supplyBases.split(',')
-const supplyTeam = store.getters.supplyTeam.split(',')
 
 const getDemandOrders = async () => {
   const res = await getOrdersByDemandId(demand.value.id)
@@ -142,6 +142,8 @@ const submitOrder = async () => {
 }
 
 onMounted(async () => {
+  supplyTeam.value = await store.getters.supplyTeam
+
   const id = store.getters.getPopupContent.data
   const demandRes = await getDemandById(id)
   demand.value = demandRes.data[0]

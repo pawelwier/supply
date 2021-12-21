@@ -1,10 +1,14 @@
 <template>
   <h3>Zaloguj się</h3>
-  <form @submit.prevent="validateUser">
-    <label>nazwa: </label>
-    <input v-model="user.name" />
-    <label>hasło: </label>
-    <input type="password" v-model="user.password" @input="errorMessage = ''" />
+  <form @submit.prevent="validateUser" class="login-form">
+    <div>
+      <label>nazwa: </label>
+      <input v-model="user.name" />
+    </div>
+    <div>
+      <label>hasło: </label>
+      <input type="password" v-model="user.password" @input="errorMessage = ''" />
+    </div>
     <button>
       Zaloguj
     </button>
@@ -49,5 +53,12 @@ const validateUser = async () => {
   margin-top: 30px;
   color: #FF0015F9;
   font-weight: 700;
+}
+.login-form {
+  background-color: #BEAC4D49;
+  padding: 20px 0;
+}
+.login-form div {
+  line-height: 30px;
 }
 </style>

@@ -1,5 +1,9 @@
 import {makeApiRequest, getApiUrl} from '../utils/apiRequests'
 
+export async function getAllUsers() {
+  return await makeApiRequest('get', getApiUrl('users'))
+}
+
 export async function getUserById(id) {
   return await makeApiRequest('get', getApiUrl(`users/${id}`))
 }

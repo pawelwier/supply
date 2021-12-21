@@ -61,7 +61,7 @@ onMounted(async () => {
   margin-left: 20px;
 }
 .archive-record-wrapper {
-  background-color: rgba(190,172,77,0.29);
+  background-color: #BEAC4D49;
   padding: 10px;
   margin-bottom: 20px;
 }

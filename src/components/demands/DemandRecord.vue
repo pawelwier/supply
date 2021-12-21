@@ -58,7 +58,7 @@ const showEditDemandForm = () => {
 }
 .product-name-quantity {
   font-size: 18px;
-  background-color: rgba(190,172,77,0.29);
+  background-color: #BEAC4D49;
   padding: 0 5px;
 }
 .left-break {

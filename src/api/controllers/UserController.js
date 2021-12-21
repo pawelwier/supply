@@ -1,5 +1,12 @@
 const {connection} = require ('../config/sqlConfig')
 
+const getAllUsers = async (req, res) => {
+  const sqlQuery = `SELECT * FROM users`
+  await connection.query(sqlQuery, (err, data) => {
+    res.json({data})
+  })
+}
+
 const getUserById = async (req, res) => {
   const {id} = req.params
   const sqlQuery = `SELECT * FROM users WHERE id = ${id}`
@@ -32,6 +39,7 @@ const addNewUser = async (req, res) => {
 }
 
 module.exports = {
+  getAllUsers,
   getUserById,
   validateUser,
   addNewUser,

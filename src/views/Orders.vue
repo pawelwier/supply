@@ -14,7 +14,6 @@
       </tbody>
     </table>
   </div>
-  <LoginRedirect v-else />
 </template>
 
 <script setup>
@@ -22,7 +21,6 @@ import {onMounted, ref} from 'vue'
 import {getAllOrders, getOrdersByCategory} from '../controllers/OrderController'
 import OrderRecord from "../components/orders/OrderRecord";
 import CategorySelect from "../components/utils/CategorySelect";
-import LoginRedirect from "../components/utils/LoginRedirect";
 
 const orders = ref(null)
 
